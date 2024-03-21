@@ -32,12 +32,20 @@ class AuthController extends AbstractController
         return new RedirectResponse($this->appUrl);
     }
 
+
+    #[Route('/test', name: 'test', methods: ['GET'])]
+    #[IKnowWhatImDoingThisIsAPublicRoute]
+    public function test(): JsonResponse
+    {
+        return new JsonResponse("Test");
+    }
+
     #[Route('/login', name: 'api_login', methods: ['POST'])]
     #[IKnowWhatImDoingThisIsAPublicRoute]
     public function login(#[CurrentUser]
     User|null $user,): JsonResponse
     {
-        return new JsonResponse($user);
+        return new JsonResponse(data: $user);
     }
 
     #[Route('/auth/me', name: 'api_me')]

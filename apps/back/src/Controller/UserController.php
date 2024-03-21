@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\DevTools\PHPStan\ThisRouteDoesntNeedAVoter;
 use App\Dto\Request\User\CreateUserDto;
+use Symfony\Component\HttpFoundation\Request;
 use App\Dto\Request\User\UpdateUserDto;
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -28,12 +29,12 @@ class UserController extends AbstractController
         private readonly UpdateUserUseCase $updateUser,
     ) {
     }
-
+    // Create users
     #[Route('/users', name: 'create_user', methods: ['POST'])]
     #[IsGranted(UserVoter::CREATE_USER)]
     #[ThisRouteDoesntNeedAVoter]
     public function createUser(#[MapRequestPayload]
-    CreateUserDto $userDto,): JsonResponse
+    CreateUserDto $userDto): JsonResponse
     {
         $user = $this->createUser->createUser($userDto);
 
@@ -42,6 +43,7 @@ class UserController extends AbstractController
         return new JsonResponse($user);
     }
 
+    // List of users 
     #[Route('/users', name: 'list_users', methods: ['GET'])]
     #[IsGranted(UserVoter::VIEW_ANY_USER)]
     #[ThisRouteDoesntNeedAVoter]
@@ -51,7 +53,7 @@ class UserController extends AbstractController
 
         return new JsonResponse($users);
     }
-
+    // Find users id
     #[Route('/users/{id}', name: 'get_user', methods: ['GET'])]
     #[IsGranted(UserVoter::VIEW_ANY_USER, subject: 'user')]
     public function getUserEntity(User $user): JsonResponse
@@ -59,9 +61,13 @@ class UserController extends AbstractController
         return new JsonResponse([
             'id' => $user->getId(),
             'email' => $user->getEmail(),
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'score' => $user->getScore(),
+            'date_time' => $user->getDateTime()->format('Y-m-d H:i:s'),
         ]);
     }
-
+    // Update user info 
     #[Route('/users/{id}', name: 'update_user', methods: ['PUT'])]
     #[IsGranted(UserVoter::EDIT_ANY_USER, subject: 'user')]
     public function updateUser(User $user, #[MapRequestPayload]
@@ -76,7 +82,7 @@ class UserController extends AbstractController
             'email' => $user->getEmail(),
         ]);
     }
-
+    // Delete users
     #[Route('/users/{id}', name: 'delete_user', methods: ['DELETE'])]
     #[IsGranted(UserVoter::DELETE_ANY_USER, subject: 'user')]
     public function deleteUser(User $user): JsonResponse
