@@ -32,7 +32,7 @@ class UserPayment
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $remarks = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_time = null;
 
     #[ORM\ManyToOne]
@@ -124,10 +124,9 @@ class UserPayment
         return $this->date_time;
     }
 
-    public function setDateTime(\DateTimeInterface $date_time): static
+    public function setDateTime()
     {
-        $this->date_time = $date_time;
-
+        $this->date_time = new \DateTime();
         return $this;
     }
 

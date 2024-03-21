@@ -16,6 +16,8 @@ class UserFixtures extends Fixture
     ) {
     }
 
+
+
     public function load(ObjectManager $manager): void
     {
         $user = new User('super-admin', 'admin@tcm.com');
@@ -24,5 +26,8 @@ class UserFixtures extends Fixture
 
         $manager->persist($user);
         $manager->flush();
+
+        // store reference to user transation for User relation to userPayments
+        $this->addReference('super-admin', $user);
     }
 }
