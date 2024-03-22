@@ -1,17 +1,16 @@
 #version: "3"
 services:
-
   back:
     image: ${BACK_IMAGE_NAME}:${DEPLOYMENT_TAG}
-    restart:  on-failure
+    restart: on-failure
     labels:
       - traefik.enable=true
       - traefik.http.routers.back_router.rule=${BACK_ROUTER_RULE}
       - traefik.http.routers.back_router.service=back_service
       - traefik.http.services.back_service.loadbalancer.server.port=80
     environment:
-      DATABASE_URL: "mysql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@mysql:3306/${DATABASE_NAME}?serverVersion=11.1.2-MariaDB"
-      TESTS_DATABASE_URL: "mysql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@mysql_tests:3306/${DATABASE_NAME}?serverVersion=11.1.2-MariaDB"
+      DATABASE_URL: 'mysql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@mysql:3306/${DATABASE_NAME}?serverVersion=11.1.2-MariaDB'
+      TESTS_DATABASE_URL: 'mysql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@mysql_tests:3306/${DATABASE_NAME}?serverVersion=11.1.2-MariaDB'
       APP_SSO_SERVICEPROVIDER_X509CERT: ${APP_SSO_SERVICEPROVIDER_X509CERT}
       APP_SSO_SERVICEPROVIDER_PRIVATEKEY: ${APP_SSO_SERVICEPROVIDER_PRIVATEKEY}
       APP_SSO_IDENTITYPROVIDER_X509CERT: ${APP_SSO_IDENTITYPROVIDER_X509CERT}
@@ -26,7 +25,7 @@ services:
 
   mysql:
     image: 'mariadb:11.1'
-    restart:  on-failure
+    restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_DATABASE: ${DATABASE_NAME}
@@ -37,7 +36,7 @@ services:
 
   front:
     image: ${FRONT_IMAGE_NAME}:${DEPLOYMENT_TAG}
-    user: "node"
+    user: 'node'
     labels:
       - traefik.enable=true
       - traefik.http.routers.front_router.rule=${FRONT_ROUTER_RULE}
@@ -56,15 +55,15 @@ services:
     labels:
       - traefik.enable=false
     ports:
-      - "80:80"
-    restart:  on-failure
+      - '80:80'
+    restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       default:
         aliases:
-          - "${API_DOMAIN}"
-          - "${BASE_DOMAIN}"
+          - '${API_DOMAIN}'
+          - '${BASE_DOMAIN}'
 
 volumes:
   mysql_db:

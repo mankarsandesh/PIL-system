@@ -5,42 +5,48 @@ namespace App\Entity;
 use App\Repository\UserPaymentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserPaymentInterface;
+
 
 #[ORM\Entity(repositoryClass: UserPaymentRepository::class)]
-class UserPayment
+class UserPayment implements UserPaymentInterface, \JsonSerializable
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    public function __construct(
+        #[ORM\Id]
+        #[ORM\GeneratedValue]
+        #[ORM\Column]
+        private ?int $id = null,
 
-    #[ORM\Column(length: 50)]
-    private ?string $code = null;
+        #[ORM\Column(length: 50)]
+        private ?string $code = null,
 
-    #[ORM\Column(length: 50)]
-    private ?string $gps_location = null;
+        #[ORM\Column(length: 50)]
+        private ?string $gps_location = null,
 
-    #[ORM\Column]
-    private ?int $amount = null;
+        #[ORM\Column]
+        private ?int $amount = null,
 
-    #[ORM\Column(length: 10)]
-    private ?string $currency = null;
+        #[ORM\Column(length: 10)]
+        private ?string $currency = null,
 
-    #[ORM\Column(length: 10)]
-    private ?string $status = null;
+        #[ORM\Column(length: 10)]
+        private ?string $status = null,
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $remarks = null;
+        #[ORM\Column(length: 255, nullable: true)]
+        private ?string $remarks = null,
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date_time = null;
+        #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+        private ?\DateTimeInterface $date_time = null,
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+        #[ORM\ManyToOne]
+        #[ORM\JoinColumn(nullable: false)]
+        private ?User $user = null,
 
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
-    private ?self $payment = null;
+        #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+        private ?self $payment = null,
+    ) {
+    }
+
 
     public function getId(): ?int
     {
@@ -152,5 +158,19 @@ class UserPayment
         $this->payment = $payment;
 
         return $this;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'code' => $this->getCode(),
+            'gps_location' => $this->getGpsLocation(),
+            'amount' => $this->getAmount(),
+            'currency' => $this->getCurrency(),
+            'status' => $this->getStatus(),
+            'user' => $this->getUser(),
+            'date_time' => $this->getDateTime(),
+        ];
     }
 }

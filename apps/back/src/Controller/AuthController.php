@@ -10,17 +10,27 @@ use App\Entity\User;
 use OneLogin\Saml2\Auth;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Synfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
+use App\Entity\UserToken;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
+
 class AuthController extends AbstractController
 {
     public function __construct(
         private readonly Auth $auth,
         private readonly string $appUrl,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository,
     ) {
     }
 
@@ -43,8 +53,10 @@ class AuthController extends AbstractController
     #[Route('/login', name: 'api_login', methods: ['POST'])]
     #[IKnowWhatImDoingThisIsAPublicRoute]
     public function login(#[CurrentUser]
-    User|null $user,): JsonResponse
+    User|null $user): JsonResponse
     {
+        $user = $this->userRepository->findOneBy(['email' => $user->getEmail()]);
+        // $token =  $JWTManager->create($user);
         return new JsonResponse(data: $user);
     }
 
