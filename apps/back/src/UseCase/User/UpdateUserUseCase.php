@@ -18,7 +18,14 @@ class UpdateUserUseCase
     {
         $user->setEmail($userDto->getEmail());
         $this->passwordUseCase->updatePassword($user, $userDto);
+        return $user;
+    }
 
+
+    public function updateUserPayment(User $user, UpdateUserDto $userDto): User
+    {
+        $user->setEmail($userDto->getEmail());
+        $this->passwordUseCase->updatePassword($user, $userDto);
         return $user;
     }
 }

@@ -1,31 +1,31 @@
 <template>
-  <main id="main" class="main">
-    <section class="login flex-nowrap">
-      <div class="welcome-box">
-        <div class="content-box no-padding">
-          <h1>{{ $t("pages.auth.login.title") }}</h1>
-        </div>
-      </div>
-      <form
-        class="login-form temporary-primary-bg"
-        @submit.prevent.stop="submitAuthenticateUser"
-      >
-        <InputText
-          v-model="username"
-          :placeholder="$t('pages.auth.login.username')"
-          type="text"
-        />
-        <InputText
-          v-model="password"
-          :placeholder="$t('pages.auth.login.password')"
-          type="password"
-        />
+   <main id="main" class="main">
+      <section class="login flex-nowrap">
+         <div class="welcome-box">
+            <div class="content-box no-padding">
+               <h1>{{ $t("pages.auth.login.title") }}</h1>
+            </div>
+         </div>
+         <form
+            class="login-form temporary-primary-bg"
+            @submit.prevent.stop="submitAuthenticateUser"
+         >
+            <InputText
+               v-model="username"
+               :placeholder="$t('pages.auth.login.username')"
+               type="text"
+            />
+            <InputText
+               v-model="password"
+               :placeholder="$t('pages.auth.login.password')"
+               type="password"
+            />
 
-        <Button type="submit"> {{ $t("pages.auth.login.ok") }}</Button>
-        <div v-if="errorMessage">{{ errorMessage }}</div>
-      </form>
-    </section>
-  </main>
+            <Button type="submit"> {{ $t("pages.auth.login.ok") }}</Button>
+            <div v-if="errorMessage">{{ errorMessage }}</div>
+         </form>
+      </section>
+   </main>
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
@@ -35,8 +35,8 @@ import useBasicError from "~/composables/useBasicError";
 import useInternalUrl from "~/composables/url/useInternalUrl";
 
 definePageMeta({
-  layout: "anonymous",
-  middleware: ["redirect-authenticated"],
+   layout: "anonymous",
+   middleware: ["redirect-authenticated"],
 });
 
 const authStore = useAuthUser();
@@ -57,16 +57,20 @@ const password = ref("");
 const { $appFetch }: { $appFetch: AppFetch<any> } = useNuxtApp();
 const internalUrl = useInternalUrl();
 const submitAuthenticateUser = async () => {
-  resetError();
-  try {
-    const continueUrl = "" + route.query.returnTo;
-    await authStore.authenticateUser(username.value, password.value, $appFetch);
-    if (route.query.returnTo && internalUrl.isInternalUrl(continueUrl)) {
-      return await navigateTo(continueUrl, { external: true });
-    }
-    return await navigateTo("/");
-  } catch (e: any) {
-    await setError(e);
-  }
+   resetError();
+   try {
+      const continueUrl = "" + route.query.returnTo;
+      await authStore.authenticateUser(
+         username.value,
+         password.value,
+         $appFetch
+      );
+      if (route.query.returnTo && internalUrl.isInternalUrl(continueUrl)) {
+         return await navigateTo(continueUrl, { external: true });
+      }
+      return await navigateTo("/");
+   } catch (e: any) {
+      await setError(e);
+   }
 };
 </script>

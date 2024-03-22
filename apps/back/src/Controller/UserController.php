@@ -29,17 +29,16 @@ class UserController extends AbstractController
         private readonly UpdateUserUseCase $updateUser,
     ) {
     }
+
     // Create users
     #[Route('/users', name: 'create_user', methods: ['POST'])]
     #[IsGranted(UserVoter::CREATE_USER)]
     #[ThisRouteDoesntNeedAVoter]
     public function createUser(#[MapRequestPayload]
-    CreateUserDto $userDto): JsonResponse
+    $userDto): JsonResponse
     {
         $user = $this->createUser->createUser($userDto);
-
         $this->entityManager->flush();
-
         return new JsonResponse($user);
     }
 
@@ -50,9 +49,9 @@ class UserController extends AbstractController
     public function listUsers(\Symfony\Bundle\SecurityBundle\Security $security): JsonResponse
     {
         $users = $this->userRepository->findAll();
-
         return new JsonResponse($users);
     }
+
     // Find users id
     #[Route('/users/{id}', name: 'get_user', methods: ['GET'])]
     #[IsGranted(UserVoter::VIEW_ANY_USER, subject: 'user')]
@@ -67,6 +66,7 @@ class UserController extends AbstractController
             'date_time' => $user->getDateTime()->format('Y-m-d H:i:s'),
         ]);
     }
+
     // Update user info 
     #[Route('/users/{id}', name: 'update_user', methods: ['PUT'])]
     #[IsGranted(UserVoter::EDIT_ANY_USER, subject: 'user')]
@@ -74,14 +74,13 @@ class UserController extends AbstractController
     UpdateUserDto $userDto,): JsonResponse
     {
         $user = $this->updateUser->updateUser($user, $userDto);
-
         $this->entityManager->flush();
-
         return new JsonResponse([
             'id' => $user->getId(),
             'email' => $user->getEmail(),
         ]);
     }
+
     // Delete users
     #[Route('/users/{id}', name: 'delete_user', methods: ['DELETE'])]
     #[IsGranted(UserVoter::DELETE_ANY_USER, subject: 'user')]
@@ -89,7 +88,6 @@ class UserController extends AbstractController
     {
         $this->entityManager->remove($user);
         $this->entityManager->flush();
-
         return new JsonResponse(true);
     }
 }

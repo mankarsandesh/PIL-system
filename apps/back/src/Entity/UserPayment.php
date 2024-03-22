@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserPaymentInterface;
 
 
 #[ORM\Entity(repositoryClass: UserPaymentRepository::class)]
-class UserPayment implements UserPaymentInterface, \JsonSerializable
+class UserPayment implements \JsonSerializable
 {
     public function __construct(
         #[ORM\Id]
@@ -170,6 +170,7 @@ class UserPayment implements UserPaymentInterface, \JsonSerializable
             'currency' => $this->getCurrency(),
             'status' => $this->getStatus(),
             'user' => $this->getUser(),
+            'payment' => $this->getPayment(),
             'date_time' => $this->getDateTime(),
         ];
     }

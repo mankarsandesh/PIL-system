@@ -1,44 +1,38 @@
 <template>
    <div>
       <div
-         v-show="usersPending"
+         v-show="pending"
          v-t="{ path: 'components.user.list.pending' }"
       ></div>
       <div v-show="error">{{ error }}}</div>
       {{ errorDelete }}
-      <table v-if="users" id="users">
+      <table v-if="UserPayment" id="users">
          <thead>
             <tr>
-               <th>{{ $t("components.user.list.id") }}</th>
-               <th>{{ $t("components.user.list.email") }}</th>
-               <th>{{ $t("components.user.list.role") }}</th>
-               <th>{{ $t("components.user.list.action") }}</th>
+               <th>Id</th>
+
+               <th>Date</th>
+               <th>Code</th>
+               <th>Amount</th>
+               <th>Payments Label</th>
+               <th>Localization</th>
+               <th>Status</th>
             </tr>
          </thead>
          <tbody>
-            <tr v-for="(user, index) in users" :key="user.id">
+            <tr v-for="(data, index) in UserPayment" :key="data.id">
                <td>{{ index + 1 }}</td>
-               <td>{{ user.email }}</td>
+
                <td>
-                  {{ $t("components.user.list." + user.roles.toString()) }}
+                  {{ new Date(data.date_time.date).toJSON() }}
                </td>
+               <td>{{ data.code }}</td>
+               <td>{{ data.amount }} {{ data.currency }}</td>
+               <td>{{ data.status }}</td>
                <td>
-                  <NuxtLink
-                     v-if="!authStore.isAuthUser(user)"
-                     :to="`/users/${user.id}`"
-                  >
-                     <Button severity="secondary">{{
-                        $t("components.user.list.edit")
-                     }}</Button>
-                  </NuxtLink>
-                  <Button
-                     v-if="!authStore.isAuthUser(user)"
-                     severity="danger"
-                     @click="deleteUserClick(user)"
-                  >
-                     {{ $t("components.user.list.delete") }}
-                  </Button>
+                  <Button> Payment Identifier </Button>
                </td>
+               <td>{{ data.status }}</td>
             </tr>
          </tbody>
       </table>
@@ -46,25 +40,28 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from "~/types/User";
+import type { UserPayment } from "~/types/User/UserPayment";
 import useAuthUser from "~/store/auth";
-import useListUsers from "~/composables/api/user/useListUsers";
+import useListUsersPayment from "~/composables/api/user/useListUsersPayment";
 import useDeleteUser from "~/composables/api/user/useDeleteUser";
+import type { User } from "~/types/User";
 
 const authStore = useAuthUser();
 const { deleteUser, errorMessage: errorDelete } = useDeleteUser();
 
 const {
-   data: users,
+   data: UserPayment,
    error,
-   pending: usersPending,
-   refresh: usersRefresh,
-} = await useListUsers();
+   pending: pending,
+   refresh: refresh,
+} = await useListUsersPayment();
+
+console.log(UserPayment, "data");
 
 const deleteUserClick = async (user: User) => {
    try {
       await deleteUser(user);
-      usersRefresh();
+      refresh();
    } catch (e) {
       logger.error(e);
       throw e;
