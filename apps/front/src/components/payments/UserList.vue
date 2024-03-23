@@ -30,16 +30,25 @@
                <td>{{ data.amount }} {{ data.currency }}</td>
                <td>{{ data.status }}</td>
                <td>
-                  <Button> Payment Identifier </Button>
+                  <Button @click="updateUser(data)">
+                     Payment Identifier
+                  </Button>
                </td>
                <td>{{ data.status }}</td>
             </tr>
          </tbody>
       </table>
+      <model
+         v-show="showModal"
+         @close-modal="showModal = false"
+         :select_user="selectUser"
+      />
    </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import type { UserPayment } from "~/types/User/UserPayment";
 import useAuthUser from "~/store/auth";
 import useListUsersPayment from "~/composables/api/user/useListUsersPayment";
@@ -48,7 +57,8 @@ import type { User } from "~/types/User";
 
 const authStore = useAuthUser();
 const { deleteUser, errorMessage: errorDelete } = useDeleteUser();
-
+const showModal = ref(false);
+const selectUser = ref({});
 const {
    data: UserPayment,
    error,
@@ -56,7 +66,15 @@ const {
    refresh: refresh,
 } = await useListUsersPayment();
 
-console.log(UserPayment, "data");
+function updateUser(data) {
+   showModal.value = true;
+   const user = {
+      user_id: authStore.me?.id,
+      payment_id: data.id,
+   };
+   selectUser.value = user;
+   console.log(selectUser.value + "updateUser1");
+}
 
 const deleteUserClick = async (user: User) => {
    try {
