@@ -15,10 +15,12 @@ use App\DevTools\PHPStan\ThisRouteDoesntNeedAVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Security\Voter\UserVoter;
 use App\UseCase\User\UpdateUserUseCase;
-use App\UseCase\User\CreateUserUseCase;
+use App\UseCase\User\UserPaymentUseCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use App\Dto\Request\User\PaymentUserDto;
+use App\Entity\MasterPayment;
+use App\Entity\UserPayment;
 use App\Entity\User;
 
 class UserPaymentsController extends AbstractController
@@ -30,7 +32,7 @@ class UserPaymentsController extends AbstractController
         private readonly MasterPaymentRepository $masterPaymentRepository,
         private readonly UserRepository $userRepository,
         private readonly UpdateUserUseCase $updateUser,
-        private readonly CreateUserUseCase $masterPayment,
+        private readonly UserPaymentUseCase $userPayment,
 
     ) {
     }
@@ -49,12 +51,26 @@ class UserPaymentsController extends AbstractController
     #[Route('/payment/link', name: 'payment_link', methods: ['POST'])]
     #[IsGranted(UserVoter::CREATE_USER)]
     #[ThisRouteDoesntNeedAVoter]
-    public function listUserPaymentLink(#[MapRequestPayload] PaymentUserDto $payment): JsonResponse
+    public function masterPayment(#[MapRequestPayload]  Request $request): JsonResponse
     {
-        // $data = $this->updateUser->updateUserPayment($user, $userDto);
-        $data = $this->masterPayment->masterPayment($payment);
+        $payment = json_decode($request->getContent(), true);
+        // $data = new MasterPayment();
+        // $data->setPaymentLabel($payment['payment_label']);
+        // $data->setDescription($payment['description']);
+        // $data->setLocalization($payment['localization']);
+        // $data->setGpsLocation($payment['gps_location']);
+        // $data->setUser($this->getUser());
+        // $data->setDateTime(new \DateTime());
+
+        // $this->entityManager->persist($data);
         // $this->entityManager->flush();
 
-        return new JsonResponse($data);
+        $userPayment = $this->entityManager->getRepository(UserPayment::class)->find($payment['user_payment_id']);
+        if ($userPayment == null) {
+            return new JsonResponse(['message' => 'User payment not found'], Response::HTTP_NOT_FOUND);
+        }
+        // $paymentId = $data->getId();
+
+        return new JsonResponse($userPayment);
     }
 }

@@ -15,31 +15,20 @@ use App\Repository\MasterPaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class CreateUserUseCase
+class UserPaymentUseCase
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly UserRepository $userRepository,
         private readonly MasterPaymentRepository $mastersRepository,
         private readonly UserMailer $userMailer,
         private readonly PasswordUseCase $passwordUseCase,
     ) {
     }
 
-    public function createUser(CreateUserDto $userDto): User
+    public function masterPayment(PaymentUserDto $payment): MasterPayment
     {
-        if ($this->userRepository->findOneBy(['email' => $userDto->getEmail()])) {
-            throw new BadRequestHttpException('Email already exists');
-        }
-
-        $user = $this->userRepository->createUser($userDto);
-        if (!$this->passwordUseCase->updatePassword($user, $userDto)) {
-            throw new UnexpectedNotUpdatedPassword();
-        }
-        $this->entityManager->persist($user);
-
-        $this->userMailer->sendRegistrationMail($user);
-
-        return $user;
+        $data = $this->mastersRepository->paymentLink($payment);
+        $this->entityManager->persist($data);
+        return $data;
     }
 }

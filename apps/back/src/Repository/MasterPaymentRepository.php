@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\MasterPayment;
+use App\Entity\User;
 use App\Dto\Request\User\PaymentUserDto;
 use Ramsey\Uuid\Uuid;
 
@@ -24,10 +25,10 @@ class MasterPaymentRepository extends ServiceEntityRepository
         parent::__construct($registry, MasterPayment::class);
     }
 
-    public function paymentLink(PaymentUserDto $payment): MasterPayment
-    {
-        return new MasterPayment((string) Uuid::uuid4(), $payment->getPaymentLabel(), $payment->getDescription(), $payment->getLocalization(), $payment->getGpsLocation(),  new \DateTime());
-    }
+    // public function paymentLink(User $user, PaymentUserDto $payment): MasterPayment
+    // {
+    //     return new MasterPayment((string) Uuid::uuid4(), $payment->getPaymentLabel(), $payment->getDescription(), $payment->getLocalization(), $payment->getGpsLocation(),  new \DateTime(), $user->getId());
+    // }
 
 
     //    /**

@@ -14,8 +14,6 @@ class CreateUserDto extends UserDtoAbstract
     public string $password;
     public string $first_name;
     public string $last_name;
-    // public  int $score;
-    // public  DateTime $date_time;
 
 
     public function getPassword(): string
@@ -32,13 +30,4 @@ class CreateUserDto extends UserDtoAbstract
     {
         return $this->last_name;
     }
-    // public function getScore(): int
-    // {
-    //     return $this->score;
-    // }
-
-    // public function getDateTime(): DateTime
-    // {
-    //     return $this->date_time;
-    // }
 }
