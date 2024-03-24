@@ -2,27 +2,25 @@
    <div>
       <div
          v-show="pending"
-         v-t="{ path: 'components.user.list.pending' }"
+         v-t="{ path: 'components.payment.list.pending' }"
       ></div>
       <div v-show="error">{{ error }}}</div>
       {{ errorDelete }}
       <table v-if="UserPayment" id="users">
          <thead>
             <tr>
-               <th>Id</th>
-
-               <th>Date</th>
-               <th>Code</th>
-               <th>Amount</th>
-               <th>Payments Label</th>
-               <th>Localization</th>
-               <th>Status</th>
+               <th>{{ $t("components.payment.list.id") }}</th>
+               <th>{{ $t("components.payment.list.date") }}</th>
+               <th>{{ $t("components.payment.list.code") }}</th>
+               <th>{{ $t("components.payment.list.amount") }}</th>
+               <th>{{ $t("components.payment.list.payment_label") }}</th>
+               <th>{{ $t("components.payment.list.localization") }}</th>
+               <th>{{ $t("components.payment.list.status") }}</th>
             </tr>
          </thead>
          <tbody>
             <tr v-for="(data, index) in UserPayment" :key="data.id">
                <td>{{ index + 1 }}</td>
-
                <td>
                   {{ new Date(data.date_time.date).toJSON() }}
                </td>
@@ -30,6 +28,7 @@
                <td>{{ data.amount }} {{ data.currency }}</td>
                <td>{{ data.status }}</td>
                <td>
+                  {{ data.payment_label }}
                   <Button @click="updateUser(data)">
                      Payment Identifier
                   </Button>
@@ -41,6 +40,7 @@
       <model
          v-show="showModal"
          @close-modal="showModal = false"
+         @user-selected="handleSubmitLocation"
          :select_user="selectUser"
       />
    </div>
@@ -56,7 +56,6 @@ import useDeleteUser from "~/composables/api/user/useDeleteUser";
 import type { User } from "~/types/User";
 
 const authStore = useAuthUser();
-const { deleteUser, errorMessage: errorDelete } = useDeleteUser();
 const showModal = ref(false);
 const selectUser = ref({});
 const {
@@ -69,22 +68,25 @@ const {
 function updateUser(data) {
    showModal.value = true;
    const user = {
-      user_id: authStore.me?.id,
-      payment_id: data.id,
+      user_payment_id: data.id,
    };
    selectUser.value = user;
-   console.log(selectUser.value + "updateUser1");
 }
-
-const deleteUserClick = async (user: User) => {
-   try {
-      await deleteUser(user);
-      refresh();
-   } catch (e) {
-      logger.error(e);
-      throw e;
-   }
+const handleSubmitLocation = () => {
+   showModal.value = false;
+   refresh();
 };
+
+// Delete code
+// const deleteUserClick = async (user: User) => {
+//    try {
+//       await deleteUser(user);
+//       refresh();
+//    } catch (e) {
+//       logger.error(e);
+//       throw e;
+//    }
+// };
 </script>
 
 <style scoped lang="scss">

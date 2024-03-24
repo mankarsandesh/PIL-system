@@ -1,11 +1,11 @@
 import {POST} from "~/constants/http";
-import type {User} from "~/types/User";
+import type {UserMasterPayment} from "~/types/UserMasterPayment";
 import useBasicError from "~/composables/useBasicError";
 
 type UserInput = Omit<User, "id"> & {
     password: string;
 };
-export default function useCreateUser() {
+export default function useUserPaymentLink() {
     const {$appFetch} = useNuxtApp();
 
     const {setError, resetError, errorMessage, error, violations} =
@@ -15,10 +15,10 @@ export default function useCreateUser() {
         errorMessage,
         error,
         violations,
-        async createUser(user: UserInput) {
+        async paymentLinkRequest(user: UserMasterPayment) {
             try {
                 resetError();
-                const response = await $appFetch<User>("/users", {
+                const response = await $appFetch<UserMasterPayment>("/payment/link", {
                     method: POST,
                     body: user,
                 });

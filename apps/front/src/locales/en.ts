@@ -46,6 +46,17 @@ export default {
         },
         payment: {
             title: "Payment",
+            pending: "Loading payments",
+            list: {
+                id: "Id",
+                date: "Date",
+                code: "Code",
+                amount: "Amount",
+                payment_label: "Payment Label",
+                localization: "Localization",
+                status: "Status",
+                pending: "Pending",
+            },
         },
         layout: {
             appHeader: {

@@ -66,6 +66,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, defineProps } from "vue";
+import useUserPaymentLink from "~/composables/api/user/useUserPaymentLink";
+const { paymentLinkRequest, violations } = useUserPaymentLink();
+
 const payment_label = ref("");
 const payment_description = ref("");
 const localization = ref("");
@@ -73,12 +76,13 @@ const gps_location = ref("");
 const loading = ref(false);
 const error = ref("");
 const props = defineProps(["select_user"]);
+const emit = defineEmits(["close-modal"]);
 const setGPSlocation = () => {
    gps_location.value = "48.8396898,1.9781491";
    localization.value = "251 Rue Saint-Honoré, 75001 Paris, France";
 };
 
-const handleSubmitLocation = () => {
+const handleSubmitLocation = async () => {
    loading.value = true;
    if (
       !payment_label.value ||
@@ -90,15 +94,32 @@ const handleSubmitLocation = () => {
       return;
    }
    const paymentLink = {
+      user_payment_id: props.select_user.user_payment_id,
       payment_label: payment_label.value,
-      payment_description: payment_description.value,
+      description: payment_description.value,
       localization: localization.value,
-      date_time: new Date(),
-      user_id: props.select_user?.user_id,
+      gps_location: gps_location.value,
    };
-   console.log(paymentLink, "PaymentLink");
+
+   try {
+      await paymentLinkRequest(paymentLink);
+      // await navigateTo("/users");
+      emit("close-modal");
+      await navigateTo("/payments");
+   } catch (e) {
+      error.value = e;
+   }
    loading.value = false;
 };
+
+// const submit = async (state: UserMasterPayment) => {
+//    try {
+//       await createUserPaymentLink(state);
+//       // await navigateTo("/users");
+//    } catch (e) {
+//       logger.info(e);
+//    }
+// };
 </script>
 
 
