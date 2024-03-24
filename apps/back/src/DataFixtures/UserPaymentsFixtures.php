@@ -41,11 +41,7 @@ class UserPaymentsFixtures extends Fixture
         }
 
 
-        // $user = new UserPayments('super-admin', 'admin@tcm.com');
-        // $user->setPassword($this->passwordHasher->hashPassword($user, 'admin'));
-        // $user->setRoles(['ROLE_ADM  IN']);
 
-        // $manager->persist($user);
         $manager->flush();
     }
 }

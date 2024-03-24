@@ -43,6 +43,7 @@ class UserPayment implements \JsonSerializable
         private ?User $user = null,
 
         #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+        #[ORM\JoinColumn(nullable: true)]
         private ?self $payment = null,
     ) {
     }
@@ -148,12 +149,12 @@ class UserPayment implements \JsonSerializable
         return $this;
     }
 
-    public function getPayment(): ?self
+    public function getPayment(): ?MasterPayment
     {
         return $this->payment;
     }
 
-    public function setPayment(?self $payment): static
+    public function setPayment(?MasterPayment $payment): static
     {
         $this->payment = $payment;
 
