@@ -39,6 +39,17 @@ class UserPaymentsFixtures extends Fixture
             $data->setDateTime(new \DateTime());
             $manager->persist($data);
         }
+        for ($i = 0; $i < 10; $i++) {
+            $data = new UserPayment();
+            $data->setCode('MD 423' . $i);
+            $data->setGpsLocation("48.87305649334, 2.363220486813261");
+            $data->setAmount(mt_rand(10, 1000));
+            $data->setCurrency('USD');
+            $data->setStatus('SUCCESS');
+            $data->setUser($this->getReference('user1', User::class));
+            $data->setDateTime(new \DateTime());
+            $manager->persist($data);
+        }
 
 
 

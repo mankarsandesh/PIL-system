@@ -34,8 +34,7 @@ class UserController extends AbstractController
     #[Route('/users', name: 'create_user', methods: ['POST'])]
     #[IsGranted(UserVoter::CREATE_USER)]
     #[ThisRouteDoesntNeedAVoter]
-    public function createUser(#[MapRequestPayload]
-    $userDto): JsonResponse
+    public function createUser(#[MapRequestPayload] CreateUserDto $userDto): JsonResponse
     {
         $user = $this->createUser->createUser($userDto);
         $this->entityManager->flush();

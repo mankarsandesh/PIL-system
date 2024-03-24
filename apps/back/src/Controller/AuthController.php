@@ -56,7 +56,6 @@ class AuthController extends AbstractController
     User|null $user): JsonResponse
     {
         $user = $this->userRepository->findOneBy(['email' => $user->getEmail()]);
-        // $token =  $JWTManager->create($user);
         return new JsonResponse(data: $user);
     }
 

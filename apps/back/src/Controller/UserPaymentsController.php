@@ -39,12 +39,15 @@ class UserPaymentsController extends AbstractController
 
 
     #[Route('/user/payments', name: 'app_user_payments', methods: ['GET'])]
-    #[IsGranted(UserVoter::VIEW_ANY_USER)]
     #[ThisRouteDoesntNeedAVoter]
     public function listUserPayments(\Symfony\Bundle\SecurityBundle\Security $security): JsonResponse
     {
-        $data = $this->userPaymentRepository->findAll();
-        return new JsonResponse($data);
+        $user = $security->getUser();
+        $data = $this->userPaymentRepository->findBy(['user' => $user]);
+        if (!$data) {
+            return new JsonResponse(['message' => 'User payments list not found'], Response::HTTP_NOT_FOUND);
+        }
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
 
@@ -77,8 +80,6 @@ class UserPaymentsController extends AbstractController
         $userPayment->setPayment($data);
         $this->entityManager->persist($userPayment);
         $this->entityManager->flush();
-
-
         return new JsonResponse($userPayment);
     }
 }
