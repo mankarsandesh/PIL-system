@@ -26,7 +26,7 @@ class UserPaymentsFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = new User('super-admin', 'adminn');
+        $user = new User('super-admin', 'admin');
         // create 20 user transactions! Bam!
         for ($i = 0; $i < 20; $i++) {
             $data = new UserPayment();

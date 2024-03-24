@@ -56,10 +56,11 @@ class UserPaymentsController extends AbstractController
         $payment = json_decode($request->getContent(), true);
         // Find Payment id exits or not
         $userPayment = $this->entityManager->getRepository(UserPayment::class)->find($payment['user_payment_id']);
-        $paymentId = $userPayment->getPayment();
-        if ($userPayment == null && $paymentId != null) {
+        // $paymentId = $userPayment->getPayment();
+        if (!$userPayment) {
             return new JsonResponse(['message' => 'User payment not found'], Response::HTTP_NOT_FOUND);
         }
+        $paymentId = $userPayment->getPayment();
         // add new master payment information
         $data = new MasterPayment();
         $data->setPaymentLabel($payment['payment_label']);
@@ -72,20 +73,9 @@ class UserPaymentsController extends AbstractController
         $this->entityManager->persist($data);
         $this->entityManager->flush();
 
-        $masterPaymentId = $data->getId();
-        // $userPayment = new UserPayment();
         // Master Payment Id fetch after save
-
-        // $entity  = $this->entityManager->getRepository(UserPayment::class)->find(['id' => $payment['user_payment_id']]);
-        // $entity  = $this->entityManager->find(UserPayment::class, $payment['user_payment_id']);
-
-        // $userPayment->setPayment($this->entityManager->getReference($masterPaymentId, MasterPayment::class));
         $userPayment->setPayment($data);
-        // if ($userPayment) {
-        //     $userPayment->setPayment($masterPaymentId);
-        // }
-
-        $this->entityManager->persist($data);
+        $this->entityManager->persist($userPayment);
         $this->entityManager->flush();
 
 

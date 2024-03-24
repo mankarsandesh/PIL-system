@@ -28,6 +28,6 @@ class UserFixtures extends Fixture
         $manager->flush();
 
         // store reference to user transation for User relation to userPayments
-        $this->addReference('admin1231@tcm.com', $user);
+        $this->addReference('super-admin', $user);
     }
 }

@@ -42,9 +42,13 @@ class UserPayment implements \JsonSerializable
         #[ORM\JoinColumn(nullable: false)]
         private ?User $user = null,
 
-        #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+        #[ORM\OneToOne]
         #[ORM\JoinColumn(nullable: true)]
-        private ?self $payment = null,
+        private ?MasterPayment $payment = null,
+
+        // #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+        // #[ORM\JoinColumn(nullable: true)]
+        // private ?self $payment = null,
     ) {
     }
 
