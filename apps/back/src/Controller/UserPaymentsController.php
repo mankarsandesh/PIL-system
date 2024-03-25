@@ -56,30 +56,32 @@ class UserPaymentsController extends AbstractController
     #[ThisRouteDoesntNeedAVoter]
     public function masterPayment(#[MapRequestPayload]  Request $request): JsonResponse
     {
-        $payment = json_decode($request->getContent(), true);
+        $paymentRequest = json_decode($request->getContent(), true);
         // Find Payment id exits or not
-        $userPayment = $this->entityManager->getRepository(UserPayment::class)->find($payment['user_payment_id']);
+        $userPayment = $this->entityManager->getRepository(UserPayment::class)->find($paymentRequest['user_payment_id']);
         // $paymentId = $userPayment->getPayment();
         if (!$userPayment) {
             return new JsonResponse(['message' => 'User payment not found'], Response::HTTP_NOT_FOUND);
         }
-        $paymentId = $userPayment->getPayment();
-        // add new master payment information
-        $data = new MasterPayment();
-        $data->setPaymentLabel($payment['payment_label']);
-        $data->setDescription($payment['description']);
-        $data->setLocalization($payment['localization']);
-        $data->setGpsLocation($payment['gps_location']);
-        $data->setUser($this->getUser());
-        $data->setDateTime(new \DateTime());
+        // $paymentId = $userPayment->getPayment();
+        // // add new master payment information
+        $masterData = new MasterPayment();
+        $masterData->setPaymentLabel($paymentRequest['payment_label']);
+        $masterData->setDescription($paymentRequest['description']);
+        $masterData->setLocalization($paymentRequest['localization']);
+        $masterData->setGpsLocation($paymentRequest['gps_location']);
+        $masterData->setUser($this->getUser());
+        $masterData->setDateTime(new \DateTime());
 
-        $this->entityManager->persist($data);
+
+        $this->entityManager->persist($masterData);
         $this->entityManager->flush();
 
         // Master Payment Id fetch after save
-        $userPayment->setPayment($data);
+        $userPayment->setPayment($masterData);
         $this->entityManager->persist($userPayment);
         $this->entityManager->flush();
-        return new JsonResponse($userPayment);
+
+        return new JsonResponse($userPayment, Response::HTTP_OK);
     }
 }

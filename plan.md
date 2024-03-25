@@ -12,3 +12,8 @@ Question
 
 1. Boilerplate have already entity table. so should i used same entity or make new one.
 2.
+
+3. Payment Link
+4. After submit payment link hide button and show payment location form
+5. After submit payment location show success message
+6. Admin can see user list

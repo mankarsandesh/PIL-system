@@ -15,7 +15,7 @@ class CreateUserDto extends UserDtoAbstract
     public string $first_name;
     public string $last_name;
 
-    public string $roles;
+    // public string $roles;
 
 
     public function getPassword(): string
@@ -33,8 +33,8 @@ class CreateUserDto extends UserDtoAbstract
         return $this->last_name;
     }
 
-    public function getRoles(): string
-    {
-        return $this->roles;
-    }
+    // public function getRoles(): string
+    // {
+    //     return $this->roles;
+    // }
 }
