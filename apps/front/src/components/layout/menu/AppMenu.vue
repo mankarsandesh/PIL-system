@@ -36,6 +36,11 @@ const authStore = useAuthUser();
 const { $appFetch } = useNuxtApp();
 const items = computed(() => [
    {
+      label: t("components.layout.menu.appMenu.dashboard"),
+      icon: "pi pi-fw pi-file",
+      route: "/home",
+   },
+   {
       label: t("components.layout.menu.appMenu.users"),
       icon: "pi pi-fw pi-file",
       route: "/users",
@@ -55,11 +60,11 @@ const items = computed(() => [
    //     icon: "pi pi-fw pi-pencil",
    //     route: "/demo/page2",
    //   },
-   {
-      label: t("components.layout.menu.appMenu.validation"),
-      icon: "pi pi-fw pi-id-card",
-      route: "/demo/validation",
-   },
+   //    {
+   //       label: t("components.layout.menu.appMenu.validation"),
+   //       icon: "pi pi-fw pi-id-card",
+   //       route: "/demo/validation",
+   //    },
    {
       separator: true,
    },

@@ -65,6 +65,7 @@ export default {
             },
             menu: {
                 appMenu: {
+                    dashboard: "Dashboard",
                     users: "Users",
                     payments: "Payments",
                     page1: "page1",
