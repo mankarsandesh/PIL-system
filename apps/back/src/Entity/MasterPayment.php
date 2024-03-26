@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\MasterPaymentRepository;
@@ -7,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MasterPaymentRepository::class)]
-class MasterPayment
+class MasterPayment implements \JsonSerializable
 {
     public function __construct(
         #[ORM\Id]
@@ -111,5 +113,16 @@ class MasterPayment
         $this->user = $user;
 
         return $this;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'payment_label' => $this->getPaymentLabel(),
+            'description' => $this->getDescription(),
+            'localization' => $this->getLocalization(),
+            'gps_location' => $this->getGpsLocation(),
+            'date_time' => $this->getDateTime(),
+        ];
     }
 }

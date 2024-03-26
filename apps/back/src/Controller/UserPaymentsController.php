@@ -43,11 +43,11 @@ class UserPaymentsController extends AbstractController
     public function listUserPayments(\Symfony\Bundle\SecurityBundle\Security $security): JsonResponse
     {
         $user = $security->getUser();
-        $data = $this->userPaymentRepository->findBy(['user' => $user]);
-        if (!$data) {
+        $results = $this->entityManager->getRepository(UserPayment::class)->findBy(['user' => $user]);
+        if (!$results) {
             return new JsonResponse(['message' => 'User payments list not found'], Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse($data, Response::HTTP_OK);
+        return new JsonResponse($results, Response::HTTP_OK);
     }
 
 
@@ -59,12 +59,11 @@ class UserPaymentsController extends AbstractController
         $paymentRequest = json_decode($request->getContent(), true);
         // Find Payment id exits or not
         $userPayment = $this->entityManager->getRepository(UserPayment::class)->find($paymentRequest['user_payment_id']);
-        // $paymentId = $userPayment->getPayment();
+
         if (!$userPayment) {
             return new JsonResponse(['message' => 'User payment not found'], Response::HTTP_NOT_FOUND);
         }
-        // $paymentId = $userPayment->getPayment();
-        // // add new master payment information
+        // add new master payment information
         $masterData = new MasterPayment();
         $masterData->setPaymentLabel($paymentRequest['payment_label']);
         $masterData->setDescription($paymentRequest['description']);
