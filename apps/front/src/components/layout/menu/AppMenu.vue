@@ -37,17 +37,17 @@ const { $appFetch } = useNuxtApp();
 const items = computed(() => [
    {
       label: t("components.layout.menu.appMenu.dashboard"),
-      icon: "pi pi-fw pi-file",
+      icon: "pi pi-fw pi-home",
       route: "/home",
    },
    {
       label: t("components.layout.menu.appMenu.users"),
-      icon: "pi pi-fw pi-file",
+      icon: "pi pi-fw pi-user",
       route: "/users",
    },
    {
       label: t("components.layout.menu.appMenu.payments"),
-      icon: "pi pi-fw pi-file",
+      icon: "pi pi-fw pi-money-bill",
       route: "/payments",
    },
    //   {

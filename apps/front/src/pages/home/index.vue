@@ -89,9 +89,9 @@
                </div>
             </div>
          </div>
-         <h3>Recent Transactions</h3>
+         <h3>Pending Payment Identifier List</h3>
          <div>
-            <payments-user-list-unpaid />
+            <payments-user-list-Not />
          </div>
       </div>
    </div>

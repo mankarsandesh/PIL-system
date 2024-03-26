@@ -63,7 +63,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { UserPayment } from "~/types/User/UserPayment";
 import useAuthUser from "~/store/auth";
-import useListUsersPayment from "~/composables/api/user/useListUsersPayment";
+import useListUsersPaymentNot from "~/composables/api/user/useListUsersPaymentNot";
 import useDeleteUser from "~/composables/api/user/useDeleteUser";
 import type { User } from "~/types/User";
 
@@ -75,7 +75,7 @@ const {
    error,
    pending: pending,
    refresh: userPaymentRefresh,
-} = await useListUsersPayment();
+} = await useListUsersPaymentNot();
 
 function updateUser(data) {
    showModal.value = true;
@@ -86,7 +86,7 @@ function updateUser(data) {
 }
 const handleSubmitLocation = () => {
    showModal.value = false;
-   userPaymentRefresh();
+   useListUsersPaymentNot();
 };
 
 // Delete code

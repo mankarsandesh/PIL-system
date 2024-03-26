@@ -37,6 +37,18 @@ class UserPaymentsController extends AbstractController
     ) {
     }
 
+    #[Route('/user/paymentnotlabel', name: 'app_user_payments_not_list', methods: ['GET'])]
+    #[ThisRouteDoesntNeedAVoter]
+    public function listUserPaymentNot(\Symfony\Bundle\SecurityBundle\Security $security): JsonResponse
+    {
+        $user = $security->getUser();
+        $results = $this->entityManager->getRepository(UserPayment::class)->findBy(['user' => $user, 'payment' => null]);
+        if (!$results) {
+            return new JsonResponse(['message' => 'User payments list not found'], Response::HTTP_NOT_FOUND);
+        }
+        return new JsonResponse($results, Response::HTTP_OK);
+    }
+
 
     #[Route('/user/payments', name: 'app_user_payments', methods: ['GET'])]
     #[ThisRouteDoesntNeedAVoter]
