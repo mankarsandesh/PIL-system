@@ -36,6 +36,7 @@ export default {
                 title: "Users",
                 id: "Id",
                 email: "Email",
+                username: "Username",
                 role: "Role",
                 action: "Action",
                 edit: "Edit",

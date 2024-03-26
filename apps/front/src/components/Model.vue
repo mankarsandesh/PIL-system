@@ -76,12 +76,15 @@ const gps_location = ref("");
 const loading = ref(false);
 const error = ref("");
 const props = defineProps(["select_user"]);
-const emit = defineEmits(["close-modal"]);
+const emit = defineEmits(["close-modal", "user-selected"]);
 const setGPSlocation = () => {
    gps_location.value = "48.8396898,1.9781491";
    localization.value = "251 Rue Saint-Honoré, 75001 Paris, France";
 };
-
+onMounted(() => {
+   payment_label.value = "";
+   payment_description.value = "";
+});
 const handleSubmitLocation = async () => {
    loading.value = true;
    if (
@@ -105,21 +108,13 @@ const handleSubmitLocation = async () => {
       await paymentLinkRequest(paymentLink);
       // await navigateTo("/users");
       emit("close-modal");
+      emit("user-selected");
       await navigateTo("/payments");
    } catch (e) {
       error.value = e;
    }
    loading.value = false;
 };
-
-// const submit = async (state: UserMasterPayment) => {
-//    try {
-//       await createUserPaymentLink(state);
-//       // await navigateTo("/users");
-//    } catch (e) {
-//       logger.info(e);
-//    }
-// };
 </script>
 
 
@@ -133,7 +128,7 @@ const handleSubmitLocation = async () => {
    background-color: #f2f2f2;
 }
 .image_map {
-   width: 60%;
+   width: 40%;
    justify-content: center;
 }
 .image_map img {

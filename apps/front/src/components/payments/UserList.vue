@@ -26,12 +26,24 @@
                </td>
                <td>{{ data.code }}</td>
                <td>{{ data.amount }} {{ data.currency }}</td>
-               <td>{{ data.status }}</td>
                <td>
-                  {{ data.payment_label }}
-                  <Button @click="updateUser(data)">
+                  {{
+                     data.payment?.payment_label
+                        ? data.payment?.payment_label
+                        : "NO Payment Label"
+                  }}
+               </td>
+               <td>
+                  <Button
+                     v-if="!data.payment"
+                     @click="updateUser(data)"
+                     class="p-2 text-sm"
+                  >
                      Payment Identifier
                   </Button>
+                  <span v-lese>
+                     {{ data.payment?.localization }}
+                  </span>
                </td>
                <td>{{ data.status }}</td>
             </tr>
@@ -62,7 +74,7 @@ const {
    data: UserPayment,
    error,
    pending: pending,
-   refresh: refresh,
+   refresh: userPaymentRefresh,
 } = await useListUsersPayment();
 
 function updateUser(data) {
@@ -74,7 +86,7 @@ function updateUser(data) {
 }
 const handleSubmitLocation = () => {
    showModal.value = false;
-   refresh();
+   userPaymentRefresh();
 };
 
 // Delete code

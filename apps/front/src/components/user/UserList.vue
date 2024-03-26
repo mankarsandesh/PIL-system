@@ -10,6 +10,7 @@
          <thead>
             <tr>
                <th>{{ $t("components.user.list.id") }}</th>
+               <th>{{ $t("components.user.list.username") }}</th>
                <th>{{ $t("components.user.list.email") }}</th>
                <th>{{ $t("components.user.list.role") }}</th>
                <th>{{ $t("components.user.list.action") }}</th>
@@ -18,6 +19,7 @@
          <tbody>
             <tr v-for="(user, index) in users" :key="user.id">
                <td>{{ index + 1 }}</td>
+               <td>{{ user.username }}</td>
                <td>{{ user.email }}</td>
                <td>
                   {{ $t("components.user.list." + user.roles.toString()) }}
