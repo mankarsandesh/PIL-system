@@ -41,7 +41,7 @@ const items = computed(() => [
    {
       label: "Total Amount",
       icon: "pi pi-fw pi-money-bill",
-      count: authStore.me?.NotPaymentLabel,
+      count: "$" + authStore.me?.totalAmount,
       subCount: 24,
       subText: "since last visit",
    },

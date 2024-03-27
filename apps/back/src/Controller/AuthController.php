@@ -91,6 +91,7 @@ class AuthController extends AbstractController
     {
 
         $allPaymentResultCount = $this->entityManager->getRepository(UserPayment::class)->count(['user' => $user]);
+        $AllPaymentData = $this->entityManager->getRepository(UserPayment::class)->findBy(['user' => $user]);
         $resultsNotLabel = $this->entityManager->getRepository(UserPayment::class)->count(['user' => $user, 'payment' => null]);
 
         $score = 0;
@@ -110,7 +111,16 @@ class AuthController extends AbstractController
             $level3Value = $results - 30;
             $score += $level3Value * $level3;
         }
-        return new JsonResponse(['data' => $user, 'AllPayment' => $allPaymentResultCount, 'NotPaymentLabel' => $resultsNotLabel, 'score' => $score], Response::HTTP_OK);
+
+
+        $totalAmount = 0;
+        foreach ($AllPaymentData as $restresult) {
+            $totalAmount += $restresult->getAmount();
+        }
+
+
+
+        return new JsonResponse(['data' => $user, 'totalAmount' => $totalAmount, 'AllPayment' => $allPaymentResultCount, 'NotPaymentLabel' => $resultsNotLabel, 'score' => $score], Response::HTTP_OK);
         // return new JsonResponse($user);
     }
 
