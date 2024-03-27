@@ -33,7 +33,7 @@ export default {
             list: {
                 createButton: "New user",
                 pending: "Loading users",
-                title: "Users",
+                title: "User",
                 id: "Id",
                 email: "Email",
                 username: "Username",

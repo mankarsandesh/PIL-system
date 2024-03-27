@@ -7,7 +7,7 @@
          </div>
          <h3>Pending Payment Identifier List</h3>
          <div>
-            <payments-user-list-Not />
+            <payments-user-list-not />
          </div>
       </div>
    </div>
@@ -47,5 +47,3 @@ const items = computed(() => [
    },
 ]);
 </script>
-<style lang="scss" scoped>
-</style>

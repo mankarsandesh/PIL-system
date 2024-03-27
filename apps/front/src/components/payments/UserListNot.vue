@@ -29,20 +29,16 @@
                   {{
                      data.payment?.payment_label
                         ? data.payment?.payment_label
-                        : "NO Payment Label"
+                        : "No Payment Label"
                   }}
                </td>
                <td>
-                  <Button
-                     v-if="!data.payment"
-                     @click="updateUser(data)"
-                     class="p-2 text-sm"
-                  >
-                     Payment Identifier
-                  </Button>
-                  <span v-lese>
+                  <span v-if="data.payment">
                      {{ data.payment?.localization }}
                   </span>
+                  <Button v-else @click="updateUser(data)" class="p-2 text-sm">
+                     Payment Identifier
+                  </Button>
                </td>
                <td>{{ data.status }}</td>
             </tr>

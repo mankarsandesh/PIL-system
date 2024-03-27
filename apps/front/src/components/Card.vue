@@ -28,9 +28,4 @@
 <script setup lang="ts">
 import { ref, onMounted, defineProps } from "vue";
 const props = defineProps(["data"]);
-onMounted(() => {});
 </script>
-
-
-<style scoped lang="scss">
-</style>

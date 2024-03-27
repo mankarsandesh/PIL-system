@@ -4,9 +4,8 @@
          v-show="pending"
          v-t="{ path: 'components.payment.list.pending' }"
       ></div>
-      <div v-show="error">{{ error }}}</div>
-      {{ errorDelete }}
-      <table v-if="UserPayment" id="users">
+      <div v-show="error">{{ error }}</div>
+      <table v-if="userPayment" id="users">
          <thead>
             <tr>
                <th>{{ $t("components.payment.list.id") }}</th>
@@ -19,7 +18,7 @@
             </tr>
          </thead>
          <tbody>
-            <tr v-for="(data, index) in UserPayment" :key="data.id">
+            <tr v-for="(data, index) in userPayment" :key="data.id">
                <td>{{ index + 1 }}</td>
                <td>
                   {{ new Date(data.date_time.date).toJSON() }}
@@ -30,20 +29,16 @@
                   {{
                      data.payment?.payment_label
                         ? data.payment?.payment_label
-                        : "NO Payment Label"
+                        : "No Payment Label"
                   }}
                </td>
                <td>
-                  <Button
-                     v-if="!data.payment"
-                     @click="updateUser(data)"
-                     class="p-2 text-sm"
-                  >
-                     Payment Identifier
-                  </Button>
-                  <span v-lese>
+                  <span v-if="data.payment">
                      {{ data.payment?.localization }}
                   </span>
+                  <Button v-else @click="updateUser(data)" class="p-2 text-sm">
+                     Payment Identifier
+                  </Button>
                </td>
                <td>{{ data.status }}</td>
             </tr>
@@ -71,19 +66,19 @@ const authStore = useAuthUser();
 const showModal = ref(false);
 const selectUser = ref({});
 const {
-   data: UserPayment,
+   data: userPayment,
    error,
    pending: pending,
    refresh: userPaymentRefresh,
 } = await useListUsersPayment();
 
-function updateUser(data) {
+const updateUser = (data) => {
    showModal.value = true;
    const user = {
       user_payment_id: data.id,
    };
    selectUser.value = user;
-}
+};
 const handleSubmitLocation = () => {
    showModal.value = false;
    userPaymentRefresh();

@@ -18,9 +18,7 @@
                class="login-form temporary-primary-bg"
                @submit.prevent.stop="submitAuthenticateUser"
             >
-               <InlineMessage v-if="errorMessage" severity="error">{{
-                  errorMessage
-               }}</InlineMessage>
+               <div v-if="errorMessage">{{ errorMessage }}</div>
 
                <label for="email1" class="block text-900 font-medium mb-2"
                   >Email</label
@@ -52,10 +50,21 @@
                   >
                </div>
 
-               <!-- <Button label="Sign In" icon="pi pi-user"></Button> -->
-               <Button type="submit" class="w-full" icon="pi pi-user">
-                  {{ $t("pages.auth.login.ok") }}</Button
+               <Button
+                  type="submit"
+                  class="w-full"
+                  icon="pi pi-user"
+                  :disabled="loading"
                >
+                  <span v-if="loading">
+                     <i
+                        class="pi pi-spin pi-spinner"
+                        style="font-size: 18px"
+                     ></i>
+                     Loading...
+                  </span>
+                  <span v-else> &nbsp; {{ $t("pages.auth.login.ok") }}</span>
+               </Button>
             </form>
          </div>
       </section>
@@ -72,6 +81,8 @@ definePageMeta({
    layout: "anonymous",
    middleware: ["redirect-authenticated"],
 });
+
+const loading = ref(false);
 
 const authStore = useAuthUser();
 const route = useRoute();
@@ -91,6 +102,7 @@ const password = ref("");
 const { $appFetch }: { $appFetch: AppFetch<any> } = useNuxtApp();
 const internalUrl = useInternalUrl();
 const submitAuthenticateUser = async () => {
+   loading.value = true;
    resetError();
    try {
       const continueUrl = "" + route.query.returnTo;
@@ -102,8 +114,11 @@ const submitAuthenticateUser = async () => {
       if (route.query.returnTo && internalUrl.isInternalUrl(continueUrl)) {
          return await navigateTo(continueUrl, { external: true });
       }
+      loading.value = false;
+
       return await navigateTo("/");
    } catch (e: any) {
+      loading.value = false;
       await setError(e);
    }
 };
