@@ -5,13 +5,7 @@
             class="surface-card p-4 shadow-2 border-round w-full lg:w-4 mx-auto"
          >
             <div class="text-center mb-5">
-               <img
-                  src="/assets/images/true-panda.jpeg"
-                  alt="Image"
-                  height="50"
-                  class="mb-3"
-               />
-               <div class="text-900 text-3xl font-medium mb-3">PIL System</div>
+               <h3 class="logo">PIL System</h3>
             </div>
 
             <form
@@ -124,4 +118,10 @@ const submitAuthenticateUser = async () => {
 };
 </script>
 <style scoped>
+.logo {
+   font-size: 24px;
+   font-weight: bold;
+   color: rgb(154, 168, 0);
+   margin: 10px 10px;
+}
 </style>
