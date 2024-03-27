@@ -4,9 +4,8 @@
          v-show="pending"
          v-t="{ path: 'components.payment.list.pending' }"
       ></div>
-      <div v-show="error">{{ error }}}</div>
-      {{ errorDelete }}
-      <table v-if="UserPayment" id="users">
+      <div v-show="error">{{ error }}</div>
+      <table v-if="usersPayment" id="users">
          <thead>
             <tr>
                <th>{{ $t("components.payment.list.id") }}</th>
@@ -19,7 +18,7 @@
             </tr>
          </thead>
          <tbody>
-            <tr v-for="(data, index) in UserPayment" :key="data.id">
+            <tr v-for="(data, index) in usersPayment" :key="data.id">
                <td>{{ index + 1 }}</td>
                <td>
                   {{ new Date(data.date_time.date).toJSON() }}
@@ -64,26 +63,25 @@ import { useI18n } from "vue-i18n";
 import type { UserPayment } from "~/types/User/UserPayment";
 import useAuthUser from "~/store/auth";
 import useListUsersPaymentNot from "~/composables/api/user/useListUsersPaymentNot";
-import useDeleteUser from "~/composables/api/user/useDeleteUser";
-import type { User } from "~/types/User";
+// import type { User } from "~/types/User";
 
 const authStore = useAuthUser();
 const showModal = ref(false);
 const selectUser = ref({});
 const {
-   data: UserPayment,
+   data: usersPayment,
    error,
    pending: pending,
    refresh: userPaymentRefresh,
 } = await useListUsersPaymentNot();
 
-function updateUser(data) {
+const updateUser = (data) => {
    showModal.value = true;
    const user = {
       user_payment_id: data.id,
    };
    selectUser.value = user;
-}
+};
 const handleSubmitLocation = () => {
    showModal.value = false;
    useListUsersPaymentNot();

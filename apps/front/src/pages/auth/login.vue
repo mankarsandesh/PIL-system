@@ -1,29 +1,63 @@
 <template>
-   <main id="main" class="main">
-      <section class="login flex-nowrap">
-         <div class="welcome-box">
-            <div class="content-box no-padding">
-               <h1>{{ $t("pages.auth.login.title") }}</h1>
-            </div>
-         </div>
-         <form
-            class="login-form temporary-primary-bg"
-            @submit.prevent.stop="submitAuthenticateUser"
+   <main id="main" class="main" style="margin-top: 10%">
+      <section class="login flex-nowrap container">
+         <div
+            class="surface-card p-4 shadow-2 border-round w-full lg:w-4 mx-auto"
          >
-            <InputText
-               v-model="username"
-               :placeholder="$t('pages.auth.login.username')"
-               type="text"
-            />
-            <InputText
-               v-model="password"
-               :placeholder="$t('pages.auth.login.password')"
-               type="password"
-            />
+            <div class="text-center mb-5">
+               <img
+                  src="/assets/images/true-panda.jpeg"
+                  alt="Image"
+                  height="50"
+                  class="mb-3"
+               />
+               <div class="text-900 text-3xl font-medium mb-3">PIL System</div>
+            </div>
 
-            <Button type="submit"> {{ $t("pages.auth.login.ok") }}</Button>
-            <div v-if="errorMessage">{{ errorMessage }}</div>
-         </form>
+            <form
+               class="login-form temporary-primary-bg"
+               @submit.prevent.stop="submitAuthenticateUser"
+            >
+               <InlineMessage v-if="errorMessage" severity="error">{{
+                  errorMessage
+               }}</InlineMessage>
+
+               <label for="email1" class="block text-900 font-medium mb-2"
+                  >Email</label
+               >
+
+               <InputText
+                  v-model="username"
+                  :placeholder="$t('pages.auth.login.username')"
+                  type="text"
+                  class="w-full mb-3"
+               />
+
+               <label for="password1" class="block text-900 font-medium mb-2"
+                  >Password</label
+               >
+               <InputText
+                  v-model="password"
+                  :placeholder="$t('pages.auth.login.password')"
+                  type="password"
+                  class="w-full mb-3"
+               />
+
+               <div
+                  class="flex align-items-center justify-content-between mb-6"
+               >
+                  <a
+                     class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
+                     >Forgot password?</a
+                  >
+               </div>
+
+               <!-- <Button label="Sign In" icon="pi pi-user"></Button> -->
+               <Button type="submit" class="w-full" icon="pi pi-user">
+                  {{ $t("pages.auth.login.ok") }}</Button
+               >
+            </form>
+         </div>
       </section>
    </main>
 </template>
@@ -74,3 +108,5 @@ const submitAuthenticateUser = async () => {
    }
 };
 </script>
+<style scoped>
+</style>

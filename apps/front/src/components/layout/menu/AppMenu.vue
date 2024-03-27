@@ -1,5 +1,6 @@
 <template>
    <TieredMenu :model="items" class="h-screen sticky w-full">
+      {{ path }} sdsd
       <template #item="{ label, item, props, hasSubmenu }">
          <NuxtLink
             v-if="item.route"
@@ -29,7 +30,11 @@
    </TieredMenu>
 </template>
 <script setup lang="ts">
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 import useAuthUser from "~/store/auth";
+const route = useRoute();
+const path = computed(() => route.path);
 
 const { t } = useI18n();
 const authStore = useAuthUser();
@@ -38,7 +43,7 @@ const items = computed(() => [
    {
       label: t("components.layout.menu.appMenu.dashboard"),
       icon: "pi pi-fw pi-home",
-      route: "/home",
+      route: "/",
    },
    {
       label: t("components.layout.menu.appMenu.users"),

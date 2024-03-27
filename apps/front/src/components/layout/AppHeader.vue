@@ -1,8 +1,11 @@
 <template>
    <div class="grid">
-      <div class="col-2 col-offset-8"></div>
-      <div class="col-2">
-         <div class="flex">
+      <div class="col">
+         <h3 class="logo">PIL System</h3>
+      </div>
+      <div class="col"></div>
+      <div class="col">
+         <div class="flex" style="justify-content: end">
             <p
                v-if="authStore.me?.data?.email"
                v-t="{
@@ -10,7 +13,7 @@
                   args: { username: authStore.me?.data.email },
                }"
             ></p>
-            <span class="scoreStyle"> {{ authStore.me?.score }}</span>
+            <span class="scoreStyle"> {{ authStore.me?.score }} score</span>
          </div>
       </div>
    </div>
@@ -21,9 +24,21 @@ import { useAuthUser } from "~/store/auth";
 const authStore = useAuthUser();
 </script>
 <style scoped>
-.scoreStyle {
-   font-size: 2rem;
+.logo {
+   font-size: 24px;
+   font-weight: bold;
    color: rgb(154, 168, 0);
-   padding: 12px;
+   margin: 10px 10px;
+}
+.scoreStyle {
+   font-size: 16px;
+   background-color: rgb(154, 168, 0);
+   color: white;
+   font-weight: bold;
+   padding: 2px 14px;
+   margin: 10px 10px;
+   height: 30px;
+   align-content: center;
+   border-radius: 10px;
 }
 </style>
