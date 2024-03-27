@@ -6,17 +6,21 @@
                <span class="block text-500 font-medium mb-3">{{
                   props.data.label
                }}</span>
-               <div class="text-900 font-medium text-xl">152</div>
+               <div class="text-900 font-medium text-xl">
+                  {{ props.data.count }}
+               </div>
             </div>
             <div
                class="flex align-items-center justify-content-center bg-blue-100 border-round"
                style="width: 2.5rem; height: 2.5rem"
             >
-               <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+               <i :class="[props.data.icon + ' text-blue-500 text-xl']"></i>
             </div>
          </div>
-         <span class="text-green-500 font-medium">24 new </span>
-         <span class="text-500">since last visit</span>
+         <span class="text-green-500 font-medium"
+            >{{ props.data.count }} new
+         </span>
+         <span class="text-500">{{ props.data.subText }} </span>
       </div>
    </div>
 </template>

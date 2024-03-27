@@ -51,6 +51,7 @@ class UserController extends AbstractController
         return new JsonResponse($users);
     }
 
+
     // Find users id
     #[Route('/users/{id}', name: 'get_user', methods: ['GET'])]
     #[IsGranted(UserVoter::VIEW_ANY_USER, subject: 'user')]
